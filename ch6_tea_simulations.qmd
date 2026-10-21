@@ -585,7 +585,7 @@ estimate_power(n_total = 48, delta = 0)
 Now estimate power for every combination of sample size and effect size. `expand_grid()` makes a tibble with one row per combination, and `map2_dbl()` calls `estimate_power()` once per row. This runs 20,000 simulated experiments, so give it about 30 seconds.
 
 ```{r}
-power_curve <- expand_grid(n_total = seq(10, 100, by = 10), # total participants (keep these even, so both conditions are the same size)
+power_curve <- expand_grid(n_total = seq(10, 100, by = 10), 
                            delta = c(0, 0.5, 1, 1.5)) |>
   mutate(power = map2_dbl(n_total, delta, \(n, d) estimate_power(n, d)))
 ```
@@ -596,8 +596,8 @@ To do: Plot the power curves: `n_total` on the x-axis, `power` on the y-axis, an
 ggplot(power_curve, aes(x = n_total, y = power, color = factor(delta))) +
   geom_line() +
   geom_point() +
-  geom_hline(yintercept = .8, linetype = "dashed") + # conventional target for power
-  geom_hline(yintercept = .05, linetype = "dotted") + # alpha
+  geom_hline(yintercept = .8, linetype = "dashed") + 
+  geom_hline(yintercept = .05, linetype = "dotted") + 
   labs(x = "total participants (n_total)",
        y = "power (proportion of experiments with p < .05)",
        color = "delta")
